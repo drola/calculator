@@ -7,7 +7,10 @@ package si.drola.calculator;
 public class Prefix {
 	protected String name;
 	protected String value;
+	protected int length;
 	
+	
+
 	/**
 	 * Get prefix name
 	 * @return prefix name
@@ -23,6 +26,7 @@ public class Prefix {
 	 */
 	public void setName(String name) {
 		this.name = name;
+		this.length = name.length();
 	}
 	
 	/**
@@ -42,5 +46,12 @@ public class Prefix {
 		this.value = value;
 	}
 	
-	
+	/**
+	 * Get prefix length
+	 * 
+	 * @return prefix length
+	 */
+	public int getLength() {
+		return length;
+	}	
 }
