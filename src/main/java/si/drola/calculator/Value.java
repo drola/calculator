@@ -2,21 +2,42 @@ package si.drola.calculator;
 
 import java.util.Arrays;
 
-import org.apache.commons.lang3.ArrayUtils;
 
 public class Value {
-	String[] numerator;
-	String[] denominator;
+	ValueUnit[] units;
 	double factor;
+
+	protected class ValueUnit implements Comparable<ValueUnit>, Cloneable {
+		public static final double EPSILON = 0.0000000000000001;
+		public double exponent;
+		public String name;
+
+		public int compareTo(ValueUnit o) {
+			return name.compareTo(o.name);
+		}
+
+		public boolean equals(ValueUnit o) {
+			return name.equals(o.name)
+					&& Math.abs(exponent - o.exponent) < EPSILON;
+		}
+		
+		public ValueUnit clone() {
+			ValueUnit c = new ValueUnit();
+			c.exponent = exponent;
+			c.name = name;
+			return c;
+		}
+	}
 
 	/**
 	 * Construct a new Value with default value of 1.
 	 */
 	public Value() {
-		numerator = new String[] {};
-		denominator = new String[] {};
+		units = new ValueUnit[] {};
 		factor = 1;
 	}
+	
+	
 
 	/**
 	 * Add two values
@@ -27,18 +48,22 @@ public class Value {
 	 * @throws Exception
 	 */
 	public Value add(Value b) throws Exception {
-		reduceUnits();
-		b.reduceUnits();
-
-		if (compareUnits(b)) {
+		if (!areUnitsIdentical(b)) {
 			throw new Exception("Different units, cannot do summation.");
 		}
 
 		Value result = new Value();
 		result.factor = this.factor + b.factor;
-		result.numerator = this.numerator;
-		result.denominator = this.denominator;
+		result.units = cloneUnits(units);
 		return result;
+	}
+	
+	protected ValueUnit[] cloneUnits(ValueUnit[] in) {
+		ValueUnit[] out = new ValueUnit[in.length];
+		for(int i = 0; i<out.length; i++) {
+			out[i] = in[i].clone();
+		}
+		return out;
 	}
 
 	/**
@@ -50,13 +75,13 @@ public class Value {
 	public Value multiply(Value b) {
 		Value result = new Value();
 		result.factor = this.factor * b.factor;
-		result.numerator = multiplyUnits(this.numerator, b.numerator);
-		result.denominator = multiplyUnits(this.denominator, b.denominator);
+		result.units = multiplyUnits(this.units, b.units, 1);
 		return result;
 	}
 
 	/**
 	 * Divide two values
+	 * 
 	 * @param b
 	 * 
 	 * @return this / b
@@ -64,117 +89,80 @@ public class Value {
 	public Value divide(Value b) {
 		Value result = new Value();
 		result.factor = this.factor / b.factor;
-		result.numerator = multiplyUnits(this.numerator, b.denominator);
-		result.denominator = multiplyUnits(this.denominator, b.numerator);
+		result.units = multiplyUnits(this.units, b.units, -1);
 		return result;
 	}
 
 	/**
 	 * Exponentiate unit
 	 * 
-	 * @param power Positive integer
+	 * @param power
+	 *            Power
 	 * @return
 	 */
-	public Value exp(int power) {
-		int numlen, denlen;
+	public Value exp(double power) {
 		Value result = new Value();
-		
-		if(power == 0) {
-			return result;
-		}
-		
-		compactUnits();
-		numlen = numerator.length;
-		denlen = denominator.length;
-		result.numerator = new String[numlen * power];
-		result.denominator = new String[denlen * power];
-		for(int i = 0; i<power; i++) {
-			for(int j = 0; j<numlen; j++) {
-				result.numerator[j + i*numlen] = numerator[j];
-			}
-			
-			for(int j = 0; j<denlen; j++) {
-				result.denominator[j + i*denlen] = denominator[j];
-			}
-		}
-		
 		result.factor = Math.pow(factor, power);
+		result.units = multiplyUnits(new ValueUnit[0], units, power);
 		return result;
 	}
 
-	protected String[] multiplyUnits(String[] a, String[] b) {
-		return ArrayUtils.addAll(a, b);
+	protected ValueUnit[] multiplyUnits(ValueUnit[] a, ValueUnit[] b, double b_exp) {
+		ValueUnit[] result = new ValueUnit[a.length + b.length];
+		for(int i = 0; i<a.length; i++) {
+			result[i] = a[i].clone();
+		}
+		for(int i = 0; i<b.length; i++) {
+			result[i + a.length] = b[i].clone();
+			result[i + a.length].exponent *= b_exp;
+		}
+		result = compactUnits(result);
+		return result;
 	}
 
-	/**
-	 * Cancel units in numerator and denominator as much as possible.
-	 */
-	protected void reduceUnits() {
-		sortUnits();
-		int den = 0;
-		int num = 0;
-		while (denominator.length > den && numerator.length > num) {
-			int cmp = denominator[den].compareTo(numerator[num]);
-			if (cmp == 0) {
-				denominator[den++] = "";
-				numerator[num++] = "";
-			} else if (cmp < 0) {
-				den++;
-			} else {
-				num++;
-			}
-		}
-	}
+	
 
 	/**
 	 * Remove all empty units that remained from cancelling, etc
 	 */
-	protected void compactUnits() {
-		// 1. count
-		int len = 0;
-		for (int i = 0; i < numerator.length; i++) {
-			if (numerator[i].length() > 0) {
-				len++;
+	protected ValueUnit[] compactUnits(ValueUnit[] units) {
+		if(units.length<1) {
+			return units;
+		}
+		
+		//1. sort
+		Arrays.sort(units);
+		
+		//2. merge all units with same name into one ValueUnit
+		ValueUnit prev = units[0];
+		for(int i = 1; i<units.length; i++) {
+			if(prev.name.equals(units[i].name)) {
+				prev.exponent += units[i].exponent;
+				units[i] = null;
 			}
 		}
-
-		// 2. new temporary array
-		String[] tmp = new String[len];
+		
+		//3. clean-up
+		int count = 0;
+		for(int i = 0; i<units.length; i++)
+		{
+			if(units[i] != null) {
+				count++;
+			}
+		}
+		
 		int pos = 0;
-		for (int i = 0; i < numerator.length; i++) {
-			if (numerator[i].length() > 0) {
-				// 3. copy only non-empty units
-				tmp[pos++] = numerator[i];
-			}
+		ValueUnit[] tmp = new ValueUnit[count];
+		for(int i = 0; i<units.length; i++)
+		{
+			tmp[pos++] = units[i];
 		}
-		numerator = tmp;
-
-		// 1. count
-		len = 0;
-		for (int i = 0; i < denominator.length; i++) {
-			if (denominator[i].length() > 0) {
-				len++;
-			}
-		}
-
-		// 2. new temporary array
-		tmp = new String[len];
-		pos = 0;
-		for (int i = 0; i < denominator.length; i++) {
-			if (denominator[i].length() > 0) {
-				// 3. copy only non-empty units
-				tmp[pos++] = denominator[i];
-			}
-		}
-		denominator = tmp;
+		
+		return tmp;
 	}
-
-	/**
-	 * Sort units in numerator and denominator
-	 */
-	protected void sortUnits() {
-		Arrays.sort(this.numerator);
-		Arrays.sort(this.denominator);
+	
+	protected void compactUnits() {
+		units = compactUnits(units);
 	}
 
 	/**
@@ -182,45 +170,22 @@ public class Value {
 	 * 
 	 * @param b
 	 * 
-	 * @return 0 if units are identical
+	 * @return true if units are identical
 	 */
-	protected boolean compareUnits(Value b) {
-		return compareUnitProducts(denominator, b.denominator)
-				|| compareUnitProducts(numerator, b.numerator);
-	}
-
-	/**
-	 * Compare two products of units.
-	 * 
-	 * @param a
-	 * @param b
-	 * @return 0 if products are identical
-	 */
-	protected boolean compareUnitProducts(String[] a, String[] b) {
-		int ai = 0;
-		int bi = 0;
-		boolean ablank, bblank;
-
-		while (ai < a.length && bi < b.length) {
-			ablank = a[ai] == "";
-			bblank = b[bi] == "";
-			if (!(ai < a.length) && !bblank) {
-				return true;
-			} else if (!(bi < b.length) && !ablank) {
-				return true;
-			} else if (ablank) {
-				ai++;
-			} else if (bblank) {
-				bi++;
-			} else if (a[ai] != b[bi]) {
-				return true;
-			} else {
-				ai++;
-				bi++;
+	protected boolean areUnitsIdentical(Value b) {
+		compactUnits();
+		b.compactUnits();
+		if(b.units.length != units.length) {
+			return false;
+		}
+		
+		for(int i = 0; i<units.length; i++) {
+			if(!units[i].equals(b.units[i])) {
+				return false;
 			}
 		}
-
-		return false;
+		
+		return true;
 	}
 
 }
