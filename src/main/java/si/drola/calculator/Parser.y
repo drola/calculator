@@ -1,31 +1,34 @@
 %language "Java"
 %name-prefix "Calc"
-%define parser_class_name "Calc"
+%define parser_class_name "Parser"
+%define package "si.drola.calculator"
 %define public
+
+%define throws Exception
 
 %token <Double> REAL
 %token <Value> UNIT
-%token <dfunc> RFUNC
-%token <ufunc> UFUNC
-%token <integer> EXPONENT
-%token <integer> MULTIPLY
-%token <integer> MULTSTAR
-%token <integer> DIVIDE
-%token <integer> NUMDIV
-%token <integer> SQRT
-%token <integer> CUBEROOT
-%token <integer> MULTMINUS
-%token <integer> EOL
-%token <integer> FUNCINV
-%token <integer> SCANERROR
-%token <integer> BADNUMBER
+%token <Function> RFUNC
+%token <Function> UFUNC
+%token EXPONENT
+%token MULTIPLY
+%token MULTSTAR
+%token DIVIDE
+%token NUMDIV
+%token SQRT
+%token CUBEROOT
+%token MULTMINUS
+%token EOL
+%token FUNCINV
+%token SCANERROR
+%token BADNUMBER
 
 
-%type <number> numexpr
-%type <utype> expr
-%type <utype> list
-%type <utype> pexpr
-%type <utype> unitexpr
+%type <Double> numexpr
+%type <Value> expr
+%type <Value> list
+%type <Value> pexpr
+%type <Value> unitexpr
 
 
 %left ADD MINUS
@@ -36,26 +39,30 @@
 %right EXPONENT
 %left NUMDIV
 
+%code {
+
+Value result = null;
+
+}
 
 %%
- input: EOL          { COMM->result = makenumunit(1,&err); CHECK; YYACCEPT; }
-      | unitexpr EOL { COMM->result = $1; YYACCEPT; }
-      | error        { YYABORT; }
+ input: EOL          { result = new Value(1); return YYACCEPT; }
+      | unitexpr EOL { result = $1; return YYACCEPT; }
+      | error        { return YYABORT; }
       ;
 
  unitexpr:  expr                    {$$ = $1;}
-         |  DIVIDE list             { invertunit($2); $$=$2;}
+         |  DIVIDE list             {$$=$2.exp(-1);}
          ;
 
  expr: list                         { $$ = $1; }
-     | MULTMINUS list %prec UNARY   { $$ = $2; $$->factor *= -1; }
-     | MINUS list %prec UNARY       { $$ = $2; $$->factor *= -1; }
-     | expr ADD expr                { err = addunit($1,$3); CHECK; $$=$1;}
-     | expr MINUS expr              { $3->factor *= -1; err = addunit($1,$3); 
-                                         CHECK; $$=$1;}
-     | expr DIVIDE expr             { err = divunit($1, $3); CHECK; $$=$1;}
-     | expr MULTIPLY expr           { err = multunit($1,$3); CHECK; $$=$1;}
-     | expr MULTSTAR expr           { err = multunit($1,$3); CHECK; $$=$1;}
+     | MULTMINUS list %prec UNARY   { $$ = $2.multiply(new Value(-1)); }
+     | MINUS list %prec UNARY       { $$ = $2.multiply(new Value(-1)); }
+     | expr ADD expr                { $$ = $1.add($3);}
+     | expr MINUS expr              { $$ = $1.substract($3);}
+     | expr DIVIDE expr             { $$ = $1.divide($3);}
+     | expr MULTIPLY expr           { $$ = $1.multiply($3); }
+     | expr MULTSTAR expr           { $$ = $1.multiply($3); }
      ; 
 
  numexpr:  REAL                     { $$ = $1;         }
@@ -68,25 +75,25 @@
  /* list is a list of units, possibly raised to powers, to be multiplied
     together. */
 
- list:  numexpr                    { $$ = makenumunit($1,&err); CHECK;}
+ list:  numexpr                    { $$ = new Value($1);}
       | UNIT                       { $$ = $1; }
-      | list EXPONENT list         { err = unitpower($1,$3); CHECK; $$=$1;}
-      | list MULTMINUS list        { err = multunit($1,$3); CHECK; $$=$1;}
-      | list list %prec MULTIPLY   { err = multunit($1,$2); CHECK; $$=$1;}
+      | list EXPONENT list         { $$=$1.exp($3);}
+      | list MULTMINUS list        { $$=$1.multiply($3);}
+      | list list %prec MULTIPLY   { $$=$1.multiply($2);}
       | pexpr                      { $$=$1; }
-      | SQRT pexpr                 { err = rootunit($2,2); CHECK; $$=$2;}
-      | CUBEROOT pexpr             { err = rootunit($2,3); CHECK; $$=$2;}
-      | RFUNC pexpr                { err = funcunit($2,$1); CHECK; $$=$2;}
+      | SQRT pexpr                 { $$ = $2.exp(0.5);}
+      | CUBEROOT pexpr             { $$ = $2.exp(1/3.0);}
+      
+/*      | RFUNC pexpr                { err = funcunit($2,$1); CHECK; $$=$2;}
       | UFUNC pexpr                { err = evalfunc($2,$1,0); CHECK; $$=$2;}
-      | FUNCINV UFUNC pexpr        { err = evalfunc($3,$2,1); CHECK; $$=$3;}
+      | FUNCINV UFUNC pexpr        { err = evalfunc($3,$2,1); CHECK; $$=$3;} */
+      
       | list EXPONENT MULTMINUS list %prec EXPONENT  
-                                   { $4->factor *= -1;
-				   err = unitpower($1,$4); CHECK; $$=$1;}
+                                   { $$=$1.exp($4.multiply(new Value(-1)));}
       | list EXPONENT MINUS list %prec EXPONENT  
-                                   { $4->factor *= -1;
-				   err = unitpower($1,$4); CHECK; $$=$1;}
-      | BADNUMBER                  { err = E_BADNUM; CHECK; }
-      | SCANERROR                  { err = E_PARSEMEM; CHECK; }        
+                                   { $$=$1.exp($4.multiply(new Value(-1))); }
+      | BADNUMBER                  { throw new Exception("Bad number."); }
+      | SCANERROR                  { throw new Exception("Scan error."); }        
    ;
 
 

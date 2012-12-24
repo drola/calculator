@@ -37,7 +37,16 @@ public class Value {
 		factor = 1;
 	}
 	
-	
+	/**
+	 * Construct a new unitless Value
+	 * @param i numeric part
+	 */
+	public Value(double i) {
+		units = new ValueUnit[] {};
+		factor = i;
+	}
+
+
 
 	/**
 	 * Add two values
@@ -54,6 +63,24 @@ public class Value {
 
 		Value result = new Value();
 		result.factor = this.factor + b.factor;
+		result.units = cloneUnits(units);
+		return result;
+	}
+	
+	/**
+	 * Substract
+	 * 
+	 * @param b
+	 * @return this - b
+	 * @throws Exception
+	 */
+	public Value substract(Value b) throws Exception {
+		if (!areUnitsIdentical(b)) {
+			throw new Exception("Different units, cannot do summation.");
+		}
+
+		Value result = new Value();
+		result.factor = this.factor - b.factor;
 		result.units = cloneUnits(units);
 		return result;
 	}
@@ -186,6 +213,11 @@ public class Value {
 		}
 		
 		return true;
+	}
+
+	public Value exp(Value value) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
