@@ -310,7 +310,7 @@ public class Parser
   if (yyn == 2)
     
 /* Line 351 of lalr1.java  */
-/* Line 49 of "Parser.y"  */
+/* Line 52 of "Parser.y"  */
     { result = new Value(1); return YYACCEPT; };
   break;
     
@@ -319,7 +319,7 @@ public class Parser
   if (yyn == 3)
     
 /* Line 351 of lalr1.java  */
-/* Line 50 of "Parser.y"  */
+/* Line 53 of "Parser.y"  */
     { result = ((Value)(yystack.valueAt (2-(1)))); return YYACCEPT; };
   break;
     
@@ -328,7 +328,7 @@ public class Parser
   if (yyn == 4)
     
 /* Line 351 of lalr1.java  */
-/* Line 51 of "Parser.y"  */
+/* Line 54 of "Parser.y"  */
     { return YYABORT; };
   break;
     
@@ -337,7 +337,7 @@ public class Parser
   if (yyn == 5)
     
 /* Line 351 of lalr1.java  */
-/* Line 54 of "Parser.y"  */
+/* Line 57 of "Parser.y"  */
     {yyval = ((Value)(yystack.valueAt (1-(1))));};
   break;
     
@@ -346,7 +346,7 @@ public class Parser
   if (yyn == 6)
     
 /* Line 351 of lalr1.java  */
-/* Line 55 of "Parser.y"  */
+/* Line 58 of "Parser.y"  */
     {yyval=((Value)(yystack.valueAt (2-(2)))).exp(-1);};
   break;
     
@@ -355,7 +355,7 @@ public class Parser
   if (yyn == 7)
     
 /* Line 351 of lalr1.java  */
-/* Line 58 of "Parser.y"  */
+/* Line 61 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (1-(1)))); };
   break;
     
@@ -364,7 +364,7 @@ public class Parser
   if (yyn == 8)
     
 /* Line 351 of lalr1.java  */
-/* Line 59 of "Parser.y"  */
+/* Line 62 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (2-(2)))).multiply(new Value(-1)); };
   break;
     
@@ -373,7 +373,7 @@ public class Parser
   if (yyn == 9)
     
 /* Line 351 of lalr1.java  */
-/* Line 60 of "Parser.y"  */
+/* Line 63 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (2-(2)))).multiply(new Value(-1)); };
   break;
     
@@ -382,8 +382,8 @@ public class Parser
   if (yyn == 10)
     
 /* Line 351 of lalr1.java  */
-/* Line 61 of "Parser.y"  */
-    { yyval = ((Value)(yystack.valueAt (3-(1)))).add(((Value)(yystack.valueAt (3-(3)))));};
+/* Line 64 of "Parser.y"  */
+    { yyval = ((Value)(yystack.valueAt (3-(1)))).add(((Value)(yystack.valueAt (3-(3))))); System.out.println("addition.");};
   break;
     
 
@@ -391,7 +391,7 @@ public class Parser
   if (yyn == 11)
     
 /* Line 351 of lalr1.java  */
-/* Line 62 of "Parser.y"  */
+/* Line 65 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (3-(1)))).substract(((Value)(yystack.valueAt (3-(3)))));};
   break;
     
@@ -400,7 +400,7 @@ public class Parser
   if (yyn == 12)
     
 /* Line 351 of lalr1.java  */
-/* Line 63 of "Parser.y"  */
+/* Line 66 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (3-(1)))).divide(((Value)(yystack.valueAt (3-(3)))));};
   break;
     
@@ -409,7 +409,7 @@ public class Parser
   if (yyn == 13)
     
 /* Line 351 of lalr1.java  */
-/* Line 64 of "Parser.y"  */
+/* Line 67 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (3-(1)))).multiply(((Value)(yystack.valueAt (3-(3))))); };
   break;
     
@@ -418,7 +418,7 @@ public class Parser
   if (yyn == 14)
     
 /* Line 351 of lalr1.java  */
-/* Line 65 of "Parser.y"  */
+/* Line 68 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (3-(1)))).multiply(((Value)(yystack.valueAt (3-(3))))); };
   break;
     
@@ -427,7 +427,7 @@ public class Parser
   if (yyn == 15)
     
 /* Line 351 of lalr1.java  */
-/* Line 68 of "Parser.y"  */
+/* Line 71 of "Parser.y"  */
     { yyval = ((Double)(yystack.valueAt (1-(1))));         };
   break;
     
@@ -436,7 +436,7 @@ public class Parser
   if (yyn == 16)
     
 /* Line 351 of lalr1.java  */
-/* Line 69 of "Parser.y"  */
+/* Line 72 of "Parser.y"  */
     { yyval = ((Double)(yystack.valueAt (3-(1)))) / ((Double)(yystack.valueAt (3-(3))));    };
   break;
     
@@ -445,7 +445,7 @@ public class Parser
   if (yyn == 17)
     
 /* Line 351 of lalr1.java  */
-/* Line 72 of "Parser.y"  */
+/* Line 75 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (3-(2))));  };
   break;
     
@@ -454,7 +454,7 @@ public class Parser
   if (yyn == 18)
     
 /* Line 351 of lalr1.java  */
-/* Line 78 of "Parser.y"  */
+/* Line 81 of "Parser.y"  */
     { yyval = new Value(((Double)(yystack.valueAt (1-(1)))));};
   break;
     
@@ -463,7 +463,7 @@ public class Parser
   if (yyn == 19)
     
 /* Line 351 of lalr1.java  */
-/* Line 79 of "Parser.y"  */
+/* Line 82 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (1-(1)))); };
   break;
     
@@ -472,7 +472,7 @@ public class Parser
   if (yyn == 20)
     
 /* Line 351 of lalr1.java  */
-/* Line 80 of "Parser.y"  */
+/* Line 83 of "Parser.y"  */
     { yyval=((Value)(yystack.valueAt (3-(1)))).exp(((Value)(yystack.valueAt (3-(3)))));};
   break;
     
@@ -481,7 +481,7 @@ public class Parser
   if (yyn == 21)
     
 /* Line 351 of lalr1.java  */
-/* Line 81 of "Parser.y"  */
+/* Line 84 of "Parser.y"  */
     { yyval=((Value)(yystack.valueAt (3-(1)))).multiply(((Value)(yystack.valueAt (3-(3)))));};
   break;
     
@@ -490,7 +490,7 @@ public class Parser
   if (yyn == 22)
     
 /* Line 351 of lalr1.java  */
-/* Line 82 of "Parser.y"  */
+/* Line 85 of "Parser.y"  */
     { yyval=((Value)(yystack.valueAt (2-(1)))).multiply(((Value)(yystack.valueAt (2-(2)))));};
   break;
     
@@ -499,7 +499,7 @@ public class Parser
   if (yyn == 23)
     
 /* Line 351 of lalr1.java  */
-/* Line 83 of "Parser.y"  */
+/* Line 86 of "Parser.y"  */
     { yyval=((Value)(yystack.valueAt (1-(1)))); };
   break;
     
@@ -508,7 +508,7 @@ public class Parser
   if (yyn == 24)
     
 /* Line 351 of lalr1.java  */
-/* Line 84 of "Parser.y"  */
+/* Line 87 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (2-(2)))).exp(0.5);};
   break;
     
@@ -517,7 +517,7 @@ public class Parser
   if (yyn == 25)
     
 /* Line 351 of lalr1.java  */
-/* Line 85 of "Parser.y"  */
+/* Line 88 of "Parser.y"  */
     { yyval = ((Value)(yystack.valueAt (2-(2)))).exp(1/3.0);};
   break;
     
@@ -526,7 +526,7 @@ public class Parser
   if (yyn == 26)
     
 /* Line 351 of lalr1.java  */
-/* Line 92 of "Parser.y"  */
+/* Line 95 of "Parser.y"  */
     { yyval=((Value)(yystack.valueAt (4-(1)))).exp(((Value)(yystack.valueAt (4-(4)))).multiply(new Value(-1)));};
   break;
     
@@ -535,7 +535,7 @@ public class Parser
   if (yyn == 27)
     
 /* Line 351 of lalr1.java  */
-/* Line 94 of "Parser.y"  */
+/* Line 97 of "Parser.y"  */
     { yyval=((Value)(yystack.valueAt (4-(1)))).exp(((Value)(yystack.valueAt (4-(4)))).multiply(new Value(-1))); };
   break;
     
@@ -544,7 +544,7 @@ public class Parser
   if (yyn == 28)
     
 /* Line 351 of lalr1.java  */
-/* Line 95 of "Parser.y"  */
+/* Line 98 of "Parser.y"  */
     { throw new Exception("Bad number."); };
   break;
     
@@ -553,7 +553,7 @@ public class Parser
   if (yyn == 29)
     
 /* Line 351 of lalr1.java  */
-/* Line 96 of "Parser.y"  */
+/* Line 99 of "Parser.y"  */
     { throw new Exception("Scan error."); };
   break;
     
@@ -1123,9 +1123,9 @@ public class Parser
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
   private static final byte yyrline_[] =
   {
-         0,    49,    49,    50,    51,    54,    55,    58,    59,    60,
-      61,    62,    63,    64,    65,    68,    69,    72,    78,    79,
-      80,    81,    82,    83,    84,    85,    91,    93,    95,    96
+         0,    52,    52,    53,    54,    57,    58,    61,    62,    63,
+      64,    65,    66,    67,    68,    71,    72,    75,    81,    82,
+      83,    84,    85,    86,    87,    88,    94,    96,    98,    99
   };
 
   // Report on the debug stream that the rule yyrule is going to be reduced.
@@ -1207,12 +1207,15 @@ public class Parser
 
 
 Value result = null;
+public Value getResult() {
+  return result;
+}
 
 
 
 
 /* Line 927 of lalr1.java  */
-/* Line 1216 of "Parser.java"  */
+/* Line 1219 of "Parser.java"  */
 
 }
 

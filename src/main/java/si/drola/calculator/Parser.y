@@ -42,6 +42,9 @@
 %code {
 
 Value result = null;
+public Value getResult() {
+  return result;
+}
 
 }
 
