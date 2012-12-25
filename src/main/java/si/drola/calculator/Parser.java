@@ -383,7 +383,7 @@ public class Parser
     
 /* Line 351 of lalr1.java  */
 /* Line 64 of "Parser.y"  */
-    { yyval = ((Value)(yystack.valueAt (3-(1)))).add(((Value)(yystack.valueAt (3-(3))))); System.out.println("addition.");};
+    { yyval = ((Value)(yystack.valueAt (3-(1)))).add(((Value)(yystack.valueAt (3-(3)))));};
   break;
     
 
@@ -526,8 +526,8 @@ public class Parser
   if (yyn == 26)
     
 /* Line 351 of lalr1.java  */
-/* Line 95 of "Parser.y"  */
-    { yyval=((Value)(yystack.valueAt (4-(1)))).exp(((Value)(yystack.valueAt (4-(4)))).multiply(new Value(-1)));};
+/* Line 90 of "Parser.y"  */
+    { yyval = ((Function)(yystack.valueAt (2-(1)))).evaluate(((Value)(yystack.valueAt (2-(2))))); };
   break;
     
 
@@ -535,8 +535,8 @@ public class Parser
   if (yyn == 27)
     
 /* Line 351 of lalr1.java  */
-/* Line 97 of "Parser.y"  */
-    { yyval=((Value)(yystack.valueAt (4-(1)))).exp(((Value)(yystack.valueAt (4-(4)))).multiply(new Value(-1))); };
+/* Line 92 of "Parser.y"  */
+    { yyval = ((Function)(yystack.valueAt (3-(2)))).evaluate(((Value)(yystack.valueAt (3-(3))))); };
   break;
     
 
@@ -544,13 +544,31 @@ public class Parser
   if (yyn == 28)
     
 /* Line 351 of lalr1.java  */
-/* Line 98 of "Parser.y"  */
-    { throw new Exception("Bad number."); };
+/* Line 95 of "Parser.y"  */
+    { yyval=((Value)(yystack.valueAt (4-(1)))).exp(((Value)(yystack.valueAt (4-(4)))).multiply(new Value(-1)));};
   break;
     
 
   case 29:
   if (yyn == 29)
+    
+/* Line 351 of lalr1.java  */
+/* Line 97 of "Parser.y"  */
+    { yyval=((Value)(yystack.valueAt (4-(1)))).exp(((Value)(yystack.valueAt (4-(4)))).multiply(new Value(-1))); };
+  break;
+    
+
+  case 30:
+  if (yyn == 30)
+    
+/* Line 351 of lalr1.java  */
+/* Line 98 of "Parser.y"  */
+    { throw new Exception("Bad number."); };
+  break;
+    
+
+  case 31:
+  if (yyn == 31)
     
 /* Line 351 of lalr1.java  */
 /* Line 99 of "Parser.y"  */
@@ -561,7 +579,7 @@ public class Parser
 
 
 /* Line 351 of lalr1.java  */
-/* Line 565 of "Parser.java"  */
+/* Line 583 of "Parser.java"  */
 	default: break;
       }
 
@@ -968,14 +986,15 @@ public class Parser
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
      STATE-NUM.  */
-  private static final byte yypact_ninf_ = -13;
-  private static final byte yypact_[] =
+  private static final short yypact_ninf_ = -21;
+  private static final short yypact_[] =
   {
-        35,   -13,   -13,   -13,    83,   -12,   -12,    83,   -13,   -13,
-     -13,    83,     2,    13,     7,   110,     6,   -13,    52,    52,
-     -13,   -13,    52,    52,    94,   -13,   -13,     2,     2,     2,
-       2,     2,    15,    59,    83,    76,   -13,   -13,    17,    17,
-      -7,    -7,   -13,    83,    83,    16,    76,    16,    16
+        40,   -21,   -21,   -21,   -20,   132,   -20,   -20,   132,   -21,
+       6,   -21,   -21,   132,    60,    18,    -9,     1,     8,   -21,
+      80,   -21,    80,   -21,   -21,    80,   -20,    80,   133,   -21,
+     -21,    60,    60,    60,    60,    60,    19,    96,   132,   116,
+     -21,   -21,   -21,    21,    21,     7,     7,   -21,   132,   132,
+      23,   116,    23,    23
   };
 
   /* YYDEFACT[S] -- default reduction number in state S.  Performed when
@@ -983,24 +1002,25 @@ public class Parser
      default is an error.  */
   private static final byte yydefact_[] =
   {
-         0,     4,    15,    19,     0,     0,     0,     0,     2,    29,
-      28,     0,     0,     0,     0,     5,    18,    23,     7,     6,
-      24,    25,     8,     9,     0,     1,     3,     0,     0,     0,
-       0,     0,     0,     0,     0,    22,    17,    13,    14,    12,
-      11,    10,    16,     0,     0,    20,    21,    26,    27
+         0,     4,    15,    19,     0,     0,     0,     0,     0,     2,
+       0,    31,    30,     0,     0,     0,     0,     5,    18,    23,
+       7,    26,     6,    24,    25,     8,     0,     9,     0,     1,
+       3,     0,     0,     0,     0,     0,     0,     0,     0,    22,
+      27,    17,    13,    14,    12,    11,    10,    16,     0,     0,
+      20,    21,    28,    29
   };
 
   /* YYPGOTO[NTERM-NUM].  */
   private static final byte yypgoto_[] =
   {
-       -13,   -13,   -13,    79,    -6,     3,     0
+       -21,   -21,   -21,    -7,     3,    -3,     0
   };
 
   /* YYDEFGOTO[NTERM-NUM].  */
   private static final byte
   yydefgoto_[] =
   {
-        -1,    13,    14,    15,    16,    17,    35
+        -1,    15,    16,    17,    18,    19,    39
   };
 
   /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -1010,40 +1030,44 @@ public class Parser
   private static final byte
   yytable_[] =
   {
-        18,    27,    28,    29,    19,     2,     3,    22,    20,    21,
-      12,    23,    18,    25,     5,     6,     7,    32,     2,     9,
-      10,    11,    26,    33,    12,    27,    42,    18,    18,    18,
-      18,    18,     0,    45,    46,     0,     1,     0,     2,     3,
-       0,     0,     0,    47,    48,     4,     0,     5,     6,     7,
-       8,     0,     9,    10,    11,     2,     3,    12,     0,    33,
-       0,     0,     2,     3,     5,     6,    34,     0,     0,     9,
-      10,     5,     6,    43,    12,     0,     9,    10,    44,     2,
-       3,    12,     0,    33,     0,     0,     2,     3,     5,     6,
-       0,    24,     0,     9,    10,     5,     6,     0,    12,     0,
-       9,    10,    27,    28,    29,    12,    37,    38,    39,    40,
-      41,     0,     0,    30,    31,     0,     0,    36,    27,    28,
-      29,     0,     0,     0,     0,     0,     0,     0,     0,    30,
-      31
+        20,    21,    14,    23,    24,    22,    30,    28,    25,    31,
+      32,    33,    26,    27,    20,    31,    32,    33,    29,    36,
+      34,    35,     2,    40,    42,    43,    44,    45,    46,    31,
+      37,    20,    20,    20,    20,    20,     0,    50,    51,    47,
+       0,     1,     0,     2,     3,     4,     0,     0,    52,    53,
+       5,     0,     6,     7,     8,     9,    10,    11,    12,    13,
+       0,     0,    14,     2,     3,     4,     0,     0,     0,     0,
+       0,     0,     6,     7,     8,     0,    10,    11,    12,    13,
+       0,     0,    14,     2,     3,     4,     0,    37,     0,     0,
+       0,     0,     6,     7,    38,     0,    10,    11,    12,     2,
+       3,     4,    14,     0,     0,     0,     0,     0,     6,     7,
+      48,     0,    10,    11,    12,    49,     0,     0,    14,     2,
+       3,     4,     0,    37,     0,     0,     0,     0,     6,     7,
+       0,     0,    10,    11,    12,     2,     3,     4,    14,     0,
+       0,    31,    32,    33,     6,     7,     0,     0,    10,    11,
+      12,     0,    34,    35,    14,     0,    41
   };
 
   /* YYCHECK.  */
   private static final byte
   yycheck_[] =
   {
-         0,     8,     9,    10,     4,     3,     4,     7,     5,     6,
-      22,    11,    12,     0,    12,    13,    14,    11,     3,    17,
-      18,    19,    15,     7,    22,     8,    32,    27,    28,    29,
-      30,    31,    -1,    33,    34,    -1,     1,    -1,     3,     4,
-      -1,    -1,    -1,    43,    44,    10,    -1,    12,    13,    14,
-      15,    -1,    17,    18,    19,     3,     4,    22,    -1,     7,
-      -1,    -1,     3,     4,    12,    13,    14,    -1,    -1,    17,
-      18,    12,    13,    14,    22,    -1,    17,    18,    19,     3,
-       4,    22,    -1,     7,    -1,    -1,     3,     4,    12,    13,
-      -1,    12,    -1,    17,    18,    12,    13,    -1,    22,    -1,
-      17,    18,     8,     9,    10,    22,    27,    28,    29,    30,
-      31,    -1,    -1,    19,    20,    -1,    -1,    23,     8,     9,
-      10,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    19,
-      20
+         0,     4,    22,     6,     7,     5,    15,    14,     8,     8,
+       9,    10,     6,    13,    14,     8,     9,    10,     0,    11,
+      19,    20,     3,    26,    31,    32,    33,    34,    35,     8,
+       7,    31,    32,    33,    34,    35,    -1,    37,    38,    36,
+      -1,     1,    -1,     3,     4,     5,    -1,    -1,    48,    49,
+      10,    -1,    12,    13,    14,    15,    16,    17,    18,    19,
+      -1,    -1,    22,     3,     4,     5,    -1,    -1,    -1,    -1,
+      -1,    -1,    12,    13,    14,    -1,    16,    17,    18,    19,
+      -1,    -1,    22,     3,     4,     5,    -1,     7,    -1,    -1,
+      -1,    -1,    12,    13,    14,    -1,    16,    17,    18,     3,
+       4,     5,    22,    -1,    -1,    -1,    -1,    -1,    12,    13,
+      14,    -1,    16,    17,    18,    19,    -1,    -1,    22,     3,
+       4,     5,    -1,     7,    -1,    -1,    -1,    -1,    12,    13,
+      -1,    -1,    16,    17,    18,     3,     4,     5,    22,    -1,
+      -1,     8,     9,    10,    12,    13,    -1,    -1,    16,    17,
+      18,    -1,    19,    20,    22,    -1,    23
   };
 
   /* STOS_[STATE-NUM] -- The (internal number of the) accessing
@@ -1051,11 +1075,12 @@ public class Parser
   private static final byte
   yystos_[] =
   {
-         0,     1,     3,     4,    10,    12,    13,    14,    15,    17,
-      18,    19,    22,    25,    26,    27,    28,    29,    30,    30,
-      29,    29,    30,    30,    27,     0,    15,     8,     9,    10,
-      19,    20,    11,     7,    14,    30,    23,    27,    27,    27,
-      27,    27,    28,    14,    19,    30,    30,    30,    30
+         0,     1,     3,     4,     5,    10,    12,    13,    14,    15,
+      16,    17,    18,    19,    22,    25,    26,    27,    28,    29,
+      30,    29,    30,    29,    29,    30,     6,    30,    27,     0,
+      15,     8,     9,    10,    19,    20,    11,     7,    14,    30,
+      29,    23,    27,    27,    27,    27,    27,    28,    14,    19,
+      30,    30,    30,    30
   };
 
   /* TOKEN_NUMBER_[YYLEX-NUM] -- Internal symbol number corresponding
@@ -1074,7 +1099,8 @@ public class Parser
   {
          0,    24,    25,    25,    25,    26,    26,    27,    27,    27,
       27,    27,    27,    27,    27,    28,    28,    29,    30,    30,
-      30,    30,    30,    30,    30,    30,    30,    30,    30,    30
+      30,    30,    30,    30,    30,    30,    30,    30,    30,    30,
+      30,    30
   };
 
   /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
@@ -1083,7 +1109,8 @@ public class Parser
   {
          0,     2,     1,     2,     1,     1,     2,     1,     2,     2,
        3,     3,     3,     3,     3,     1,     3,     3,     1,     1,
-       3,     3,     2,     1,     2,     2,     4,     4,     1,     1
+       3,     3,     2,     1,     2,     2,     2,     3,     4,     4,
+       1,     1
   };
 
   /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
@@ -1107,8 +1134,9 @@ public class Parser
        9,    27,    -1,     3,    -1,    28,    11,    28,    -1,    22,
       27,    23,    -1,    28,    -1,     4,    -1,    30,     7,    30,
       -1,    30,    14,    30,    -1,    30,    30,    -1,    29,    -1,
-      12,    29,    -1,    13,    29,    -1,    30,     7,    14,    30,
-      -1,    30,     7,    19,    30,    -1,    18,    -1,    17,    -1
+      12,    29,    -1,    13,    29,    -1,     5,    29,    -1,    16,
+       6,    29,    -1,    30,     7,    14,    30,    -1,    30,     7,
+      19,    30,    -1,    18,    -1,    17,    -1
   };
 
   /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
@@ -1117,7 +1145,8 @@ public class Parser
   {
          0,     0,     3,     5,     8,    10,    12,    15,    17,    20,
       23,    27,    31,    35,    39,    43,    45,    49,    53,    55,
-      57,    61,    65,    68,    70,    73,    76,    81,    86,    88
+      57,    61,    65,    68,    70,    73,    76,    79,    83,    88,
+      93,    95
   };
 
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
@@ -1125,7 +1154,8 @@ public class Parser
   {
          0,    52,    52,    53,    54,    57,    58,    61,    62,    63,
       64,    65,    66,    67,    68,    71,    72,    75,    81,    82,
-      83,    84,    85,    86,    87,    88,    94,    96,    98,    99
+      83,    84,    85,    86,    87,    88,    90,    92,    94,    96,
+      98,    99
   };
 
   // Report on the debug stream that the rule yyrule is going to be reduced.
@@ -1188,10 +1218,10 @@ public class Parser
       return yyundef_token_;
   }
 
-  private static final int yylast_ = 130;
+  private static final int yylast_ = 156;
   private static final int yynnts_ = 7;
   private static final int yyempty_ = -2;
-  private static final int yyfinal_ = 25;
+  private static final int yyfinal_ = 29;
   private static final int yyterror_ = 1;
   private static final int yyerrcode_ = 256;
   private static final int yyntokens_ = 24;
@@ -1215,7 +1245,7 @@ public Value getResult() {
 
 
 /* Line 927 of lalr1.java  */
-/* Line 1219 of "Parser.java"  */
+/* Line 1249 of "Parser.java"  */
 
 }
 

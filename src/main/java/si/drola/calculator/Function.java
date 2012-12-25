@@ -4,25 +4,12 @@ package si.drola.calculator;
  * Mathematical function
  * 
  */
-public class Function {
-	protected String name;
-
-	/**
-	 * Get function name
-	 * 
-	 * @return name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * Set function name
-	 * 
-	 * @param name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
+public interface Function {
+	public static final int DIMENSIONLESS = 0;
+	public static final int ANGLE = 1;
+	
+	public Value evaluate(Value x);
+	public Value evaluateInverse(Value x);
+	public int getArgumentDimension();
+	public int getResultDimension();
 }

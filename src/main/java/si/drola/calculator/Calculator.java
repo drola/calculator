@@ -6,13 +6,16 @@ import java.io.InputStreamReader;
 
 public class Calculator {
 	public static void main(String[] args) {
+		Functions f = new Functions();
+		f.add("sin", new SinFunction());
+		
 		try {
 			System.out.print(" > ");
 			BufferedReader bufferRead = new BufferedReader(
 					new InputStreamReader(System.in));
 			String s = bufferRead.readLine();
 			
-			Lexer l = new Lexer(s);
+			Lexer l = new Lexer(s, f);
 			Parser p = new Parser(l);
 			p.parse();
 			

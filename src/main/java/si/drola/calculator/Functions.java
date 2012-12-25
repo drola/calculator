@@ -29,8 +29,8 @@ public class Functions {
 	 * @param f
 	 *            Function
 	 */
-	public void add(Function f) {
-		map.put(f.getName(), f);
+	public void add(String name, Function f) {
+		map.put(name, f);
 	}
 
 	/**

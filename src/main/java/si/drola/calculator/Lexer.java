@@ -9,6 +9,7 @@ public class Lexer implements Parser.Lexer {
 	protected String input = null;
 	protected int pos = 0;
 	protected int tmppos = 0;
+	protected Functions functions = null;
 
 	protected static final String nonunitchars = "~;+-*/|\t\n^ ()";
 	protected static final String nonunitends = ".,_";
@@ -16,9 +17,10 @@ public class Lexer implements Parser.Lexer {
 	protected static final String whitespace = " \t\n";
 	protected static Operator[] optable = null;
 
-	public Lexer(String input) {
+	public Lexer(String input, Functions functions) {
 		this.input = input;
 		this.pos = 0;
+		this.functions = functions;
 
 		if (optable == null)
 			optable = new Operator[] { new Operator('*', Parser.MULTIPLY),
@@ -64,8 +66,8 @@ public class Lexer implements Parser.Lexer {
 			if (current >= '0' && current <= '9') {
 				result += exp * (current - '0');
 				exp /= 10.0;
-				if(after_comma) {
-					after_comma_exp/=10.0;
+				if (after_comma) {
+					after_comma_exp /= 10.0;
 				}
 				exp2 *= 10;
 			} else if (current == '.') {
@@ -145,6 +147,18 @@ public class Lexer implements Parser.Lexer {
 
 		int length = strcspn(nonunitchars, pos);
 		// TODO!
+
+		if (length < 1) { // Next char is not a valid unit char
+			pos++;
+			return 0;
+		}
+
+		Function f = functions.find(input.substring(pos, pos + length));
+		if (f != null) {
+			lval = f;
+			pos += length;
+			return Parser.RFUNC;
+		}
 
 		// Didn't find a special string -> treat as a unit name
 		int exp = 1;

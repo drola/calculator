@@ -87,9 +87,9 @@ public Value getResult() {
       | SQRT pexpr                 { $$ = $2.exp(0.5);}
       | CUBEROOT pexpr             { $$ = $2.exp(1/3.0);}
       
-/*      | RFUNC pexpr                { err = funcunit($2,$1); CHECK; $$=$2;}
-      | UFUNC pexpr                { err = evalfunc($2,$1,0); CHECK; $$=$2;}
-      | FUNCINV UFUNC pexpr        { err = evalfunc($3,$2,1); CHECK; $$=$3;} */
+      | RFUNC pexpr                { $$ = $1.evaluate($2); }
+/*      | UFUNC pexpr                { err = evalfunc($2,$1,0); CHECK; $$=$2;} */
+      | FUNCINV UFUNC pexpr        { $$ = $2.evaluate($3); } 
       
       | list EXPONENT MULTMINUS list %prec EXPONENT  
                                    { $$=$1.exp($4.multiply(new Value(-1)));}
